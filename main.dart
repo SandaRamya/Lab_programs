@@ -1,64 +1,44 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(ResponsiveApp());  
+  runApp(MyApp());
 }
 
-class ResponsiveApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title:'Responsive App',
-      home:ResponsiveHomePage(),
+      home:ResponsiveHome(),
     );
   }
 }
 
-class ResponsiveHomePage extends StatelessWidget {
-  @override 
+class ResponsiveHome extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold (
+    double screenWidth=MediaQuery.of(context).size.width;
+    double screenHeight=MediaQuery.of(context).size.height;
+
+    return Scaffold(
       appBar:AppBar(
-        title:Text('Responsive Layout'),
+        title:Text('Media Query Responsive UI'),
       ),
-      body:LayoutBuilder(
-        builder:(context,constraints) {
-          if(constraints.maxWidth<600) {
-            return MobileLayout();
-          }else if(constraints.maxWidth<1200) {
-            return TabletLayout();
-          }else {
-            return DesktopLayout();
-          }
-        },
+      body:Center(
+        child:Container(
+          width:screenWidth*0.8,
+          height:screenHeight*0.4,
+          color:Colors.yellow,
+          child:Center(
+            child:Text(
+              screenWidth>500?'Large Screen Layout ':'Small Screen Layout',
+              style:TextStyle(
+                color:Colors.white,
+                fontSize:screenWidth>500?24:16,
+              ),
+            ),
+          ),
+        ),
       ),
-    );
-  }
-}
-
-class MobileLayout extends StatelessWidget {
- @override
- Widget build(BuildContext context) {
-  return Center(
-    child:Text('Mobile Layout',style:TextStyle(fontSize:20)),
-  );
- }
-}
-
-class TabletLayout extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child:Text('tableLayout',style:TextStyle(fontSize:24)),
-    );
-  }
- }
-
-class DesktopLayout extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child:Text('Desktop Layout',style:TextStyle(fontSize:28)),
     );
   }
 }
