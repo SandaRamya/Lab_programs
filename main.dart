@@ -8,35 +8,130 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home:ResponsiveHome(),
+      title:'Responsive UI',
+      theme:ThemeData(
+        primarySwatch:Colors.blue,
+         
+      ),
+      home:ResponsiveHomePage(),
     );
   }
 }
 
-class ResponsiveHome extends StatelessWidget {
+class ResponsiveHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double screenWidth=MediaQuery.of(context).size.width;
-    double screenHeight=MediaQuery.of(context).size.height;
-
     return Scaffold(
       appBar:AppBar(
-        title:Text('Media Query Responsive UI'),
+        title:Text('Responsive UI design'),
+     ),
+     body:LayoutBuilder(
+      builder:(context,constraints) {
+        if(constraints.maxWidth>1200) {
+          return DesktopLayout();
+        }else if(constraints.maxWidth>800 && constraints.maxWidth<=1200) {
+          return TabletLayout();
+        }else {
+          return MobileLayout();
+        }
+      },
+     ),
+     bottomNavigationBar:Footer(),
+    );
+  }
+}
+
+class MobileLayout extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+   return Column(
+    children:[
+      Header(),
+      Expanded(child:CardGridView(crossAxisCount:2)),
+    ],
+   );
+  }
+}
+
+class TabletLayout extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children:[
+        Header(),
+        Expanded(child:CardGridView(crossAxisCount:3)),
+      ],
+    );
+  }
+}
+
+class DesktopLayout extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children:[
+        Header(),
+        Expanded(child:CardGridView(crossAxisCount:4)),
+      ],
+    );
+  }
+}
+
+class Header extends StatelessWidget {
+  @override 
+  Widget build(BuildContext context) {
+    return Container(
+      padding:EdgeInsets.all(16.0),
+      color:Colors.blue,
+      child:Center(
+       child:Text(
+        'Welcome to Responsive UI',
+       style:TextStyle(fontSize:24,color:Colors.white),
       ),
-      body:Center(
-        child:Container(
-          width:screenWidth*0.8,
-          height:screenHeight*0.4,
-          color:Colors.yellow,
-          child:Center(
-            child:Text(
-              screenWidth>500?'Large Screen Layout ':'Small Screen Layout',
-              style:TextStyle(
-                color:Colors.white,
-                fontSize:screenWidth>500?24:16,
+    ),
+    );
+  }
+}
+
+class CardGridView extends StatelessWidget {
+  final int crossAxisCount;
+
+  CardGridView({required this.crossAxisCount});
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount:crossAxisCount,
+        crossAxisSpacing:10.0,
+        mainAxisSpacing:10.0,
+        ),
+         padding:EdgeInsets.all(10.0),
+         itemCount:10,
+         itemBuilder:(context,index) {
+          return Card(
+            color:Colors.blueAccent,
+            child:Center(
+              child:Text(
+                'Card $index',
+                style:TextStyle(fontSize:18,color:Colors.white),
               ),
             ),
-          ),
+          );
+         },
+    );
+  }
+} 
+
+class Footer extends StatelessWidget {
+  @override 
+  Widget build(BuildContext context) {
+    return Container(
+      padding:EdgeInsets.all(16.0),
+      color:Colors.blue,
+      child:Center(
+        child:Text(
+          'Welcome to kits college,',
+          style:TextStyle(color:Colors.white),
         ),
       ),
     );
